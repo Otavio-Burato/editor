@@ -1,12 +1,57 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Minus</title>
-  </head>
-  <body>
-    <h1>minus</h1>
-  </body>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+</head>
+<body style="background-color:#1e1e1e; margin:0px; padding=0px;" class="font">
+<style>
+.font {
+    font-family: -apple-system,BlinkMacSystemFont,Segoe WPC,Segoe UI,HelveticaNeue-Light,system-ui,Ubuntu,Droid Sans,sans-serif;
+    --monaco-monospace-font: "SF Mono",Monaco,Menlo,Consolas,"Ubuntu Mono","Liberation Mono","DejaVu Sans Mono","Courier New",monospace;
+    color: #858585;
+}
+.box {
+    position:relative;
+    width:100%;
+    height: calc(100vh - 22px);
+}
+</style>
+
+<div id="container" class="box"></div>
+submenu
+<script src="https://unpkg.com/monaco-editor/min/vs/loader.js"></script>
+<script>
+
+  require.config({
+    paths: {
+      'vs': 'https://unpkg.com/monaco-editor/min/vs',
+    }
+  });
+
+  require(['vs/editor/editor.main'], function() {
+    var editor = monaco.editor.create(document.getElementById('container'), {
+      value: [""].join('\n'),
+      language: 'javascript',
+      theme: "vs-dark",
+      scrollbar: {
+            horizontalHasArrows: true,
+            verticalScrollbarSize: 5,
+        }
+    });
+
+    editor.addAction({
+    id: 'my-unique-id',
+    label: 'test',
+    precondition: null,
+    keybindingContext: null,
+    run: function() {
+        alert("Ta funcionando 👍");
+        return null;
+        }
+    });
+
+  });
+</script>
+</body>
 </html>
