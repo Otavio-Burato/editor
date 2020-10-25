@@ -19,7 +19,7 @@
 </style>
 
 <div id="container" class="box"></div>
-submenu
+<input type="file" id="inputfile">
 <script src="https://unpkg.com/monaco-editor/min/vs/loader.js"></script>
 <script>
 
@@ -32,16 +32,19 @@ submenu
   require(['vs/editor/editor.main'], function() {
     var editor = monaco.editor.create(document.getElementById('container'), {
       value: [""].join('\n'),
-      language: 'javascript',
+      language: 'rust',
       theme: "vs-dark",
       scrollbar: {
             horizontalHasArrows: true,
             verticalScrollbarSize: 5,
+            scrollBeyondLastLine: false,
+            readOnly: false,
         }
     });
+    editor.focus();
 
     editor.addAction({
-    id: 'my-unique-id',
+    id: 'id1',
     label: 'test',
     precondition: null,
     keybindingContext: null,
@@ -51,7 +54,45 @@ submenu
         }
     });
 
+    editor.addAction({
+    id: 'id3',
+    label: 'Dark Theme',
+    precondition: null,
+    keybindingContext: null,
+    run: function() {
+            editor.updateOptions({
+                theme: "vs-dark"
+            });
+        }
+    });
+    
+    editor.addAction({
+    id: 'id4',
+    label: 'Light Theme',
+    precondition: null,
+    keybindingContext: null,
+    run: function() {
+            editor.updateOptions({
+                theme: "vs"
+            });
+        }
+    });
+
+    document.getElementById('inputfile').addEventListener('change', function() {
+      var fr=new FileReader();
+      fr.onload=function(){
+        console.log("OK")
+        var line = editor.getPosition();
+        var range = new monaco.Range(0,0,0,0);
+        var id = { major: 1, minor: 1 };             
+        var text = fr.result; 
+        var op = {identifier: id, range: range, text: text, forceMoveMarkers: true};
+        editor.executeEdits("my-source", [op]);
+      }
+      fr.readAsText(this.files[0]); 
+    })
   });
+
 </script>
 </body>
 </html>
